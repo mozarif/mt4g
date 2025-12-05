@@ -59,7 +59,7 @@ namespace util {
                 cxxopts::value<bool>()->default_value("false")->implicit_value("true"))
             ("r,random", "Randomize P-Chase arrays",
                 cxxopts::value<bool>()->default_value("false")->implicit_value("true"))
-            ("s,stdout", "Use stdout to write the final JSON result",
+            ("s,stdout", "Dump final JSON result into stdout",
                 cxxopts::value<bool>()->default_value("false")->implicit_value("true"))
             ("q,quiet", "Suppress intermediate console output",
                 cxxopts::value<bool>()->default_value("false")->implicit_value("true"))
