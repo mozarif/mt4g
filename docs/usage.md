@@ -42,11 +42,13 @@ If no benchmark group is selected all available groups are executed by default. 
 | Option | Description |
 | ------ | ----------- |
 | `-d, --device-id <id>` | GPU device to use (default `0`) |
+| `-f, --file <name>` | Specify name of output files (default `<GPU_NAME>`) |
 | `-g, --graphs` | Generate graphs for each benchmark |
+| `-l, --location <path>` | Specify location of output files (default `.`) |
 | `-o, --raw` | Write raw timing data |
 | `-p, --report` | Create Markdown report in output directory |
-| `-j, --json` | Save final JSON output to `<GPU_NAME>.json` in the current directory |
 | `-r, --random` | Randomize P-Chase arrays |
+| `-s, --stdout` | Dump final JSON result into stdout |
 | `-q, --quiet` | Only write the final JSON to stdout |
 | `--l1` | Run L1 cache benchmarks |
 | `--l2` | Run L2 cache benchmarks |
@@ -65,12 +67,14 @@ Generating graphs requires Python 3 (python3 in PATH) with the `matplotlib`, `p
 
 ### Output
 
-Benchmark results are printed as JSON to `stdout`. With `-j`/`--json` the final
-output is also saved as `<GPU_NAME>.json` in the current working directory.
-When `--graphs`, `--raw` or `--report` is enabled, additional files are written
-to `./results/<GPU_NAME>`. The `--report` flag generates a `README.md` that
-embeds all graphs and links to the raw data. If you would like to contribute
-results for hardware not yet covered, please run the tool with
-`--raw --graphs --report` and send us the generated directory via pull
-request.
+Usually, benchmark results are written as structured JSON into the file
+`<GPU_NAME>.json` of the current working directory. However, the name and path
+of the output file and directory may be changed through the flags `-f`/`--file`
+and `-l`/`--location` respectively. With `-s`/`--stdout`, the final JSON output
+file may be dumped into `stdout` instead. When `--graphs`, `--raw` or `--report`
+is enabled, additional files are written to `results/<GPU_NAME>`. The `--report`
+flag generates a `README.md` that embeds all graphs and links to the raw data.
+If you would like to contribute results for hardware not yet covered, please
+run the tool with `--raw --graphs --report` and send us the generated directory
+via pull request.
 

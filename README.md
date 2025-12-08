@@ -60,11 +60,13 @@ Common options:
 | Option | Description |
 | ------ | ----------- |
 | `-d, --device-id <id>` | GPU device to use (default `0`) |
+| `-f, --file <name>` | Specify name of output files (default `<GPU_NAME>`) |
 | `-g, --graphs` | Generate graphs for each benchmark |
+| `-l, --location <path>` | Specify location of output files (default `.`) |
 | `-o, --raw` | Write raw timing data |
 | `-p, --report` | Create Markdown report in output directory |
-| `-j, --json` | Save final JSON output to `<GPU_NAME>.json` in the current directory |
 | `-r, --random` | Randomize P-Chase arrays |
+| `-s, --stdout` | Dump final JSON result into stdout |
 | `-q, --quiet` | Reduce console output |
 | `--l1`, `--l2`, `--l3` | Run cache benchmarks for selected levels |
 | `--scalar`, `--shared`, `--memory` | Run scalar, shared and main memory tests |
@@ -79,12 +81,14 @@ Make sure to have exclusive GPU access, otherwise results are far less reliable.
 
 ### Output
 
-Benchmark results are printed as JSON. With `-j`/`--json` the final output is
-additionally saved as `<GPU_NAME>.json` in the current working directory. When
-graph, raw or report output is enabled the files are written to a directory
-named after the detected GPU. The `--report` flag writes a `README.md`
-containing the JSON summary and embeds all generated graphs with links to raw
-data.
+Usually, benchmark results are written as structured JSON into the file
+`<GPU_NAME>.json` of the current working directory. However, the name and path
+of the output file and directory may be changed through the flags `-f`/`--file`
+and `-l`/`--location` respectively. With `-s`/`--stdout`, the final JSON output
+file may be dumped into `stdout` instead. When graph, raw or report output is
+enabled the files are written to a directory named after the detected GPU. The
+`--report` flag writes a `README.md` containing the JSON summary and embeds all
+generated graphs with links to raw data.
 
 ## Repository layout
 
