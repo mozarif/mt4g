@@ -72,6 +72,7 @@ Common options:
 | `--scalar`, `--shared`, `--memory` | Run scalar, shared and main memory tests |
 | `--constant`, `--readonly`, `--texture` | NVIDIA specific cache benchmarks |
 | `--resourceshare` | Run resource sharing benchmarks |
+| `-v, --version` | Show version of mt4g |
 | `-h, --help` | Show full help |
 
 If no benchmark group is chosen all available groups are executed. Unsupported

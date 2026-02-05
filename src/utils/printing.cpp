@@ -93,6 +93,9 @@ namespace util {
             ("cache", "Cache preference: l1 | shared | equal | auto (default: auto)",
                 cxxopts::value<std::string>()->default_value("auto"))
 
+            // ------- Version -------
+            ("v,version", "Print version")
+
             // ------- Help -------
             ("h,help", "Print help");
 
@@ -108,6 +111,13 @@ namespace util {
         // Show help and exit?
         if (result.count("help")) {
             std::cout << parser.help({""}) << std::endl;
+            std::exit(EXIT_SUCCESS);
+        } else if (result.count("version")) {
+#ifdef MT4G_VERSION
+            std::cout << "mt4g " << MT4G_VERSION << std::endl;
+#else
+            std::cout << "version unknown" << std::endl;
+#endif
             std::exit(EXIT_SUCCESS);
         }
 

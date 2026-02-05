@@ -6,9 +6,10 @@ INC_DIRS      := -I$(CURDIR)/include \
                  -isystem $(CURDIR)/external/json/single_include \
                  -isystem $(HIP_PATH)/include
 
-SRC_BASE      := src
-TARGET        := mt4g
-BUILD_DIR     := build
+SRC_BASE      	:= src
+TARGET        	:= mt4g
+TARGET_VERSION	:= 1.0.2
+BUILD_DIR     	:= build
 GPU_TARGET_ARCH ?=
 d             ?= 0
 
@@ -62,6 +63,13 @@ else
   LIB_DIRS := -L$(CUDA_PATH)/lib64 -lcudart
 endif
 
+# === Get version ===
+ifneq ($(and $(strip $(shell command -v git 2>/dev/null)),$(wildcard .git)),)
+	CPPFLAGS := -DMT4G_VERSION=\"$(strip $(shell git describe --tags --abbrev=0 2>/dev/null | sed "s/^v//"))\"
+else
+	CPPFLAGS := -DMT4G_VERSION=\"$(TARGET_VERSION)\"
+endif
+
 $(TARGET): $(OBJECTS)
 	@echo "Linking $@ for $(PLATFORM) with arch $(GPU_TARGET_ARCH)"
 	$(HIPCC) $(CXXFLAGS) $(OBJECTS) $(LIB_DIRS) -o $@
@@ -70,15 +78,15 @@ $(TARGET): $(OBJECTS)
 # === Compile C++ sources (with debug intermediates if d=1) ===
 $(BUILD_DIR)/%.o: %.cpp
 	@mkdir -p $(dir $@)
-	$(HIPCC) $(CXXFLAGS) $(INC_DIRS) $(GPUFLAGS) -c $< -o $@
+	$(HIPCC) $(CPPFLAGS) $(CXXFLAGS) $(INC_DIRS) $(GPUFLAGS) -c $< -o $@
 	@if [ "$(d)" = "1" ]; then \
 		echo "Dropping all temp-files for $< into dbg/"; \
 		mkdir -p dbg; \
 		cd dbg && \
 		if [ "$(PLATFORM)" = "amd" ]; then \
-		    hipcc $(CXXFLAGS) $(INC_DIRS) $(GPUFLAGS) -x hip --save-temps -c ../$< -o /dev/null 2>/dev/null; \
+		    hipcc $(CPPFLAGS) $(CXXFLAGS) $(INC_DIRS) $(GPUFLAGS) -x hip --save-temps -c ../$< -o /dev/null 2>/dev/null; \
 		else \
-		    hipcc $(CXXFLAGS) $(INC_DIRS) $(GPUFLAGS) -x cu --save-temps -c ../$< -o /dev/null 2>/dev/null; \
+		    hipcc $(CPPFLAGS) $(CXXFLAGS) $(INC_DIRS) $(GPUFLAGS) -x cu --save-temps -c ../$< -o /dev/null 2>/dev/null; \
 		fi; \
 	fi
 
