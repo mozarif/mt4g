@@ -65,7 +65,7 @@ endif
 
 # === Get version ===
 ifneq ($(and $(strip $(shell command -v git 2>/dev/null)),$(wildcard .git)),)
-	CPPFLAGS := -DMT4G_VERSION=\"$(strip $(shell git describe --tags --abbrev=0 2>/dev/null | sed "s/^v//"))\"
+	CPPFLAGS := -DMT4G_VERSION=\"$(strip $(shell git describe --tags --dirty --always 2>/dev/null | sed "s/^v//"))\"
 else
 	CPPFLAGS := -DMT4G_VERSION=\"$(TARGET_VERSION)\"
 endif
