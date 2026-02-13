@@ -54,6 +54,9 @@ int main(int argc, char* argv[]) {
     }
 
     nlohmann::json metaInfo = {
+#ifdef MT4G_VERSION
+        {"mt4gVersion", MT4G_VERSION},
+#endif
         {"timestamp", util::getCurrentTimestamp()},
         {"hostCompiler", util::getHostCompilerVersion()}
     };
