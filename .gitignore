@@ -5,6 +5,7 @@ gpucore*
 settings.json
 dbg/*
 *.txt
+!CMakeLists.txt
 *.png
 .vscode
 !results/**
