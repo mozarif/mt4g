@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.12)
 
 project(mt4g VERSION 1.1.1 LANGUAGES CXX)
 
-set(GPU_TARGET_ARCH "" CACHE STRING)
+set(GPU_TARGET_ARCH "" CACHE STRING "The target GPU architecture")
 if(GPU_TARGET_ARCH STREQUAL "")
     message(FATAL_ERROR "Please set GPU_TARGET_ARCH, e.g. -DGPU_TARGET_ARCH=sm_70 or -DGPU_TARGET_ARCH=gfx90a")
 endif()
-if(NOT DEFINED $ENV{HIP_PATH})
+if(NOT DEFINED ENV{HIP_PATH})
     message(FATAL_ERROR "HIP_PATH is not set in environment")
 endif()
 
@@ -16,7 +16,7 @@ find_package(cxxopts 3.2.0 REQUIRED)
 find_package(Git QUIET)
 if(GIT_FOUND AND EXISTS ${CMAKE_SOURCE_DIR}/.git)
     execute_process(
-        COMMAND "${GIT_EXECUTABLE} describe --tags --dirty --always"
+        COMMAND ${GIT_EXECUTABLE} describe --tags --dirty --always
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         OUTPUT_VARIABLE GIT_DESCRIBE
         OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -35,16 +35,13 @@ configure_file(${CMAKE_SOURCE_DIR}/include/version.hpp.in ${CMAKE_SOURCE_DIR}/in
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-if(NOT DEFINED CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug)
-endif()
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(SYSTEM $ENV{HIP_PATH}/include)
 link_libraries(nlohmann_json::nlohmann_json)
 link_libraries(cxxopts::cxxopts)
 
 if(GPU_TARGET_ARCH MATCHES "^sm_")
-    if(NOT DEFINED $ENV{CUDA_PATH})
+    if(NOT DEFINED ENV{CUDA_PATH})
         message(FATAL_ERROR "CUDA_PATH is not set in environment")
     endif()
     set(ENV{HIP_PLATFORM} nvidia)

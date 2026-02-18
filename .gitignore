@@ -9,3 +9,4 @@ dbg/*
 *.png
 .vscode
 !results/**
+include/version.hpp
